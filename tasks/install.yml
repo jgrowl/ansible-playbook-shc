@@ -1,0 +1,20 @@
+- name: Install development tools
+  action: apt pkg=$item state=installed
+  with_items:
+    - build-essential
+
+- name: Download shc
+  get_url: url=http://www.datsi.fi.upm.es/~frosal/sources/shc-3.8.9.tgz dest=/tmp
+
+- name: Extract shc
+  command: tar -xf shc-3.8.9.tgz -C /usr/local/src chdir=/tmp creates=/usr/local/src/shc-3.8.9
+
+- name: Fix shc file name
+  command: ln -s shc-3.8.9.c shc.c chdir=/usr/local/src/shc-3.8.9/ creates=/usr/local/src/shc-3.8.9/shc.c
+
+- name: Compile shc
+  # Using shell here because make returns something command does not like
+  shell: make > /dev/null chdir=/usr/local/src/shc-3.8.9/ creates=/usr/local/src/shc-3.8.9/shc
+
+- name: Link shc
+  command: ln -s /usr/local/src/shc-3.8.9/shc /usr/local/bin/shc chdir=/usr/local/src/shc-3.8.9 creates=/usr/local/bin/shc

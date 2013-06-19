@@ -1,0 +1,6 @@
+---
+# Playbook installs shc - Generic shell script compiler (http://www.datsi.fi.upm.es/~frosal/)
+- hosts: shc
+  user: root
+  tasks:
+    - include: tasks/install.yml
